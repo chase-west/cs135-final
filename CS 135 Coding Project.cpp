@@ -22,8 +22,19 @@ struct Room
 
 bool gameOver = false;
 int currentRoomID = 0;
+int numberOfRooms = 5; // change this to be random in future
 vector<Room> rooms;
 
+void generateRooms()
+{
+    for (int i = 0; i < numberOfRooms; i++)
+    {
+        Room room;
+        room.id = i;
+    }
+}
+
+void generateRooms();
 
 struct Player
 {
@@ -88,7 +99,7 @@ bool canSwitchRoom()
     }
     
     else
-    {
+    {   
         return false; 
     }
 }
@@ -111,3 +122,5 @@ int main()
 
     }
 }
+
+
