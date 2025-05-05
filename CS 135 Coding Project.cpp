@@ -1,36 +1,70 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <random>
 
 using namespace std;
+
+bool gameOver = false;
 
 struct Room
 {
     int id;
     int roomX;
     int roomY;
-    string roomType[4] = {"treasure", "monster", "finish", "filler"};
     string description;
+    string roomType;
 
 
 
-    string playRoomStory()
+    void playRoomStory()
     {
-        return "test!";
+        if (roomType == "treasure")
+        {
+            // play treasure story
+        }
+        else if (roomType == "monster")
+        {
+            // play monster story
+        }
+        else if (roomType == "filler")
+        {
+            // do filler room! 
+        }
+        else if (roomType == "finish")
+        {
+            // do finish room
+            gameOver = true;
+        }
     }
 };
 
-bool gameOver = false;
+
 int currentRoomID = 0;
 int numberOfRooms = 5; // change this to be random in future
+string roomOptions[4] = { "treasure", "monster", "finish", "filler" };
 vector<Room> rooms;
 
 void generateRooms()
 {
+
+    random_device rd; 
+    mt19937 gen(rd());
+
+    int min = 0;
+    int max = 3;
+
+    uniform_int_distribution<> dist(min, max);
+
+    // Generate a random number
+    int randomNum = dist(gen);
+
     for (int i = 0; i < numberOfRooms; i++)
     {
         Room room;
         room.id = i;
+        room.roomType = roomOptions[randomNum];
+        rooms.push_back(room); // push room into vector of rooms
     }
 }
 
@@ -106,13 +140,14 @@ bool canSwitchRoom()
 
 int main()
 { 
+    generateRooms();
 
     // main game loop 
     while (!gameOver)
     {
         // render current room 
         Room currentRoom = rooms[currentRoomID];
-        cout << rooms[currentRoomID].playRoomStory(); 
+        rooms[currentRoomID].playRoomStory(); 
         cout << "enter direction you wish to travel. (n/e/s/w)";
         cin >> currentDirection;
 
