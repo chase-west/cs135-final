@@ -48,8 +48,12 @@ struct Room
     }
 };
 
+random_device rd;
+mt19937 gen(rd());
+uniform_int_distribution<> dist(5, 10);
+
 int currentRoomID = 0;
-int numberOfRooms = 5;
+int numberOfRooms = dist(gen);
 string roomOptions[4] = { "treasure", "monster", "finish", "filler" };
 vector<Room> rooms;
 
@@ -121,6 +125,8 @@ void generateRooms()
 int main()
 {
     generateRooms();
+    cout << "You enter a mystic castle with " << rooms.size() << " rooms!" << endl;
+    cout << "Escape before you die!" << endl;
 
     while (!gameOver)
     {
