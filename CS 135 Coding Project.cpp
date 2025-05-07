@@ -209,7 +209,7 @@ int main()
         }
 
         cout << "You are at (" << mainPlayer.playerX << ", " << mainPlayer.playerY << ")\n";
-        cout << "enter direction you wish to travel. (n/e/s/w)";
+        cout << "enter direction you wish to travel. (n/e/s/w)" << endl;
         cin >> currentDirection;
 
         mainPlayer.changeLocation(currentDirection);
