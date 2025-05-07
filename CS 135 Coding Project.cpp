@@ -6,7 +6,6 @@
 using namespace std;
 
 bool gameOver = false;
-bool hasSpecialItem = false; 
 
 struct Room
 {
@@ -20,19 +19,9 @@ struct Room
     void playRoomStory()
     {
         
-
-        
         if (roomType == "finish")
         {
-            cout << "You have entered the final room!";
-            if (hasSpecialItem)
-            { 
-            gameOver = true;
-            }
-            else
-            {
-                cout << "Make sure you get the magic staff to leave!";
-            }
+            cout << "You arrive in the escape room! There is a giant glowing door begging for your escape!" << endl;
         }
 
         if (roomType == "filler")
@@ -181,7 +170,7 @@ int main()
     {
         rooms[currentRoomID].playRoomStory();
 
-        if (rooms[currentRoomID].hasKey)
+        if ((rooms[currentRoomID].hasKey) && (mainPlayer.hasItem("key") == false))
         {
             cout << "This room has the key!" << endl;
             cout << "Type (h) to collect!" << endl;
@@ -197,6 +186,26 @@ int main()
             }
             cout << "You have collected the key!" << endl;
             mainPlayer.addItem("key");
+        }
+
+        if (rooms[currentRoomID].roomType == "finish")
+        {
+            if (mainPlayer.hasItem("key") == true)
+            {
+                cout << "You have the key! Press k to escape!" << endl;
+                char input;
+                cin >> input;
+                if (input == 'k')
+                { 
+                    cout << "You have escaped!" << endl;
+                    gameOver == true; 
+                    break;
+                }
+            }
+            else 
+            {
+                cout << "Return with the key to escape!" << endl;
+            }
         }
 
         cout << "You are at (" << mainPlayer.playerX << ", " << mainPlayer.playerY << ")\n";
