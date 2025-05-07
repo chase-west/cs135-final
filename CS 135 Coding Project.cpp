@@ -54,7 +54,7 @@ uniform_int_distribution<> dist(5, 10);
 
 int currentRoomID = 0;
 int numberOfRooms = dist(gen);
-string roomOptions[4] = { "treasure", "monster", "finish", "filler" };
+string roomOptions[4] = { "filler", "monster"};
 vector<Room> rooms;
 
 struct Player
@@ -103,9 +103,19 @@ string currentDirection;
 
 void generateRooms()
 {
+    // gen random index to guarentee treasure and final room
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> dist(0, 3);
+    uniform_int_distribution<> idxDist(0, numberOfRooms - 1);
+
+    int treasureIndex = idxDist(gen);
+    int finishIndex;
+    do {
+      finishIndex = idxDist(gen);
+    } while (finishIndex == treasureIndex);
+
+    // gen other rooms randomly 
+    uniform_int_distribution<> dist(0, 1);
 
     for (int i = 0; i < numberOfRooms; i++)
     {
@@ -113,13 +123,37 @@ void generateRooms()
         room.id = i;
         room.roomX = i % 3;
         room.roomY = i / 3;
-        room.roomType = roomOptions[dist(gen)];
+
+        if (i == treasureIndex)
+        {
+            room.roomType = "treasure";
+        }
+        else if (i == finishIndex)
+        {
+            room.roomType = "finish";
+        }
+
+        else
+        {
+            room.roomType = roomOptions[dist(gen)];
+        }
         room.description = "This is a " + room.roomType + " room.";
         rooms.push_back(room);
     }
 
     mainPlayer.playerX = rooms[0].roomX;
     mainPlayer.playerY = rooms[0].roomY;
+}
+
+
+// testing function to verify room structure
+
+void displayRoomTypes()
+{
+    for (int i = 0; i < rooms.size(); i++)
+    {
+       cout << rooms[i].description;
+    }
 }
 
 int main()
