@@ -13,11 +13,15 @@ struct Room
     int id;
     int roomX;
     int roomY;
+    bool hasKey = false; 
     string description;
     string roomType;
 
     void playRoomStory()
     {
+        
+
+        
         if (roomType == "finish")
         {
             cout << "You have entered the final room!";
@@ -114,6 +118,12 @@ void generateRooms()
       finishIndex = idxDist(gen);
     } while (finishIndex == treasureIndex);
 
+    int keyPlacement = idxDist(gen);
+    // gen random room for key
+    do {
+        keyPlacement = idxDist(gen);
+    } while ((keyPlacement == finishIndex) || (keyPlacement == treasureIndex));
+
     // gen other rooms randomly 
     uniform_int_distribution<> dist(0, 1);
 
@@ -137,6 +147,11 @@ void generateRooms()
         {
             room.roomType = roomOptions[dist(gen)];
         }
+        if (keyPlacement == i)
+        {
+            room.hasKey = true; 
+        }
+
         room.description = "This is a " + room.roomType + " room.";
         rooms.push_back(room);
     }
@@ -165,8 +180,27 @@ int main()
     while (!gameOver)
     {
         rooms[currentRoomID].playRoomStory();
+
+        if (rooms[currentRoomID].hasKey)
+        {
+            cout << "This room has the key!" << endl;
+            cout << "Type (h) to collect!" << endl;
+            char input;
+            cin >> input;
+            if (input != 'h')
+            { 
+                do
+                {
+                  cout << "Please collect the key by entering h!" << endl;
+                  cin >> input;
+                } while (input != 'h');
+            }
+            cout << "You have collected the key!" << endl;
+            mainPlayer.addItem("key");
+        }
+
         cout << "You are at (" << mainPlayer.playerX << ", " << mainPlayer.playerY << ")\n";
-        cout << "enter direction you wish to travel. (n/e/s/w) ";
+        cout << "enter direction you wish to travel. (n/e/s/w)";
         cin >> currentDirection;
 
         mainPlayer.changeLocation(currentDirection);
