@@ -40,7 +40,7 @@ struct Room
             int roll = dist(gen);
 
             if (roll <= 60)
-                cout << "You wander into a bland, dust-covered room. No treasure, no monsters—just stale air and empty walls. You shrug and press on.\n";
+                cout << "You wander into a bland, dust-covered room. No treasure, no monsters just stale air and empty walls. You shrug and press on.\n";
             else if (roll <= 90)
                 cout << "You step into a silent chamber. The walls are cracked, the floor is bare. You hum to yourself and keep moving.\n";
             else
@@ -334,6 +334,12 @@ int main()
 
                 mainPlayer.useItem(invNumber);
             }
+            else if (itemToUse == "key")
+            {
+                cout << "You can't use your key until you escape!" << endl;
+            }
+
+
             else {
                 cout << "You used " << itemToUse << "." << endl;
                 mainPlayer.useItem(invNumber);
