@@ -160,6 +160,17 @@ void displayRoomTypes()
     }
 }
 
+int keyFinder()
+{
+    for (int i = 0; i < rooms.size(); i++)
+    {
+        if (rooms[i].hasKey == true)
+        {
+            return (rooms[i].roomX, rooms[i].roomY);
+        }
+    }
+}
+
 int main()
 {
     generateRooms();
@@ -169,6 +180,20 @@ int main()
     while (!gameOver)
     {
         rooms[currentRoomID].playRoomStory();
+
+        if (rooms[currentRoomID].roomType == "filler")
+        {
+            static random_device rd;
+            static mt19937 gen(rd());
+            uniform_int_distribution<> dist(1, 100);
+            int roll = dist(gen);
+
+            if (roll >= 60) 
+            {
+                cout << "You have collected a key finder! Open inventory to use!" << endl;
+                mainPlayer.addItem("keyFinder");
+            }
+        }
 
         if ((rooms[currentRoomID].hasKey) && (mainPlayer.hasItem("key") == false))
         {
