@@ -61,6 +61,22 @@ struct Player
         playerInventory.push_back(itemName);
     }
 
+    void displayInventory()
+    {
+        if (playerInventory.size() != 0)
+        { 
+            cout << "This is your inventory!" << endl;
+            for (int i = 0; i < playerInventory.size(); i++)
+            {
+                cout << playerInventory[i] << endl;
+            }
+        }
+        else
+        {
+            cout << "Your inventory is empty!" << endl;
+        }
+    }
+
     bool hasItem(string itemName)
     {
         for (int i = 0; i < playerInventory.size(); i++)
@@ -232,12 +248,20 @@ int main()
                 cout << "Return with the key to escape!" << endl;
             }
         }
-
+        string userInput; 
         cout << "You are at (" << mainPlayer.playerX << ", " << mainPlayer.playerY << ")\n";
-        cout << "enter direction you wish to travel. (n/e/s/w)" << endl;
-        cin >> currentDirection;
+        cout << "enter direction you wish to travel (n/e/s/w) or type inv to open your inventory!" << endl;
+        cin >> userInput;
 
-        mainPlayer.changeLocation(currentDirection);
+        if (userInput == "inv")
+        {
+            mainPlayer.displayInventory();
+        }
+        else
+        {
+            mainPlayer.changeLocation(userInput);
+        }
+        
     }
 
     return 0;
